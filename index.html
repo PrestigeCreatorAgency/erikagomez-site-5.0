@@ -14,13 +14,13 @@ html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent;}
 body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 
 /* ── HERO ── */
-.hero{position:relative;width:100%;height:100dvh;min-height:580px;overflow:hidden;}
-.hero-photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,0.1) 0%,rgba(5,5,5,0) 20%,rgba(5,5,5,0.25) 55%,rgba(5,5,5,0.93) 80%,rgba(5,5,5,1) 100%);}
+.hero{position:relative;width:100%;min-height:100dvh;overflow:hidden;}
+.hero-photo{position:relative;width:100%;height:auto;display:block;object-fit:contain;object-position:center top;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,0.05) 0%,rgba(5,5,5,0) 30%,rgba(5,5,5,0.6) 75%,rgba(5,5,5,1) 100%);}
 .hero-grain{position:absolute;inset:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;}
 
-.hero-content{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:600px;padding:0 24px max(44px,env(safe-area-inset-bottom,44px));animation:heroin 0.9s ease both;}
-@keyframes heroin{from{opacity:0;transform:translateX(-50%) translateY(18px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+.hero-content{position:relative;width:100%;max-width:600px;margin:0 auto;padding:32px 24px max(44px,env(safe-area-inset-bottom,44px));animation:heroin 0.9s ease both;}
+@keyframes heroin{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
 
 .live-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.07);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.1);border-radius:40px;padding:5px 14px 5px 8px;margin-bottom:16px;font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:2.5px;text-transform:uppercase;}
 .live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;animation:livepulse 2.2s ease-in-out infinite;}
@@ -29,7 +29,7 @@ body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif
 .hero-name{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(52px,13vw,92px);line-height:0.9;letter-spacing:-1px;color:var(--white);margin-bottom:24px;white-space:nowrap;}
 
 .social-row{display:flex;align-items:center;gap:10px;margin-bottom:22px;}
-.social-icon{width:48px;height:48px;border-radius:12px;background:rgba(20,20,20,0.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background 0.2s,transform 0.2s;flex-shrink:0;cursor:pointer;}
+.social-icon{width:48px;height:48px;border-radius:12px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background 0.2s,transform 0.2s;flex-shrink:0;cursor:pointer;}
 .social-icon:hover{background:rgba(255,255,255,0.16);transform:translateY(-3px);}
 .social-icon svg{width:22px;height:22px;fill:var(--white);}
 
@@ -39,7 +39,7 @@ body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif
 .cta-btn:active{transform:scale(0.98);}
 .cta-arrow{margin-left:auto;font-size:18px;}
 
-.scroll-hint{position:absolute;bottom:max(14px,env(safe-area-inset-bottom,14px));right:20px;writing-mode:vertical-rl;font-size:9px;color:rgba(255,255,255,0.12);letter-spacing:3px;text-transform:uppercase;animation:scrollfade 3s ease-in-out infinite;}
+.scroll-hint{display:none;}
 @keyframes scrollfade{0%,100%{opacity:0.2;}50%{opacity:0.6;}}
 
 /* ── PAGE ── */
