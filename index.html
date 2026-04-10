@@ -256,6 +256,75 @@ body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif
   .page{max-width:680px;}
   .hero-name{font-size:72px;}
 }
+
+/* ── AGE VERIFICATION MODAL ── */
+.age-modal-bg{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.85);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  z-index:99999;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+  padding:0 0 env(safe-area-inset-bottom,0);
+}
+.age-modal-bg.open{display:flex;}
+.age-modal{
+  background:#1a1a1a;
+  border-radius:24px 24px 0 0;
+  padding:40px 24px 40px;
+  width:100%;
+  max-width:520px;
+  text-align:center;
+  animation:slideup 0.35s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes slideup{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.age-modal-icon{
+  width:72px;height:72px;
+  border-radius:50%;
+  background:#2a1010;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;
+  font-size:36px;
+}
+.age-modal h2{
+  font-size:20px;font-weight:600;
+  color:#fff;margin-bottom:10px;
+  font-family:'DM Sans',sans-serif;
+}
+.age-modal p{
+  font-size:14px;color:rgba(255,255,255,0.5);
+  margin-bottom:28px;line-height:1.5;
+}
+.age-btn-confirm{
+  display:block;width:100%;
+  padding:17px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:14px;
+  color:#fff;
+  font-size:15px;font-weight:500;
+  font-family:'DM Sans',sans-serif;
+  cursor:pointer;
+  margin-bottom:12px;
+  transition:background 0.2s;
+  text-decoration:none;
+  text-align:center;
+}
+.age-btn-confirm:hover{background:rgba(255,255,255,0.18);}
+.age-btn-cancel{
+  display:block;width:100%;
+  padding:17px;
+  background:transparent;
+  border:none;
+  color:rgba(255,255,255,0.4);
+  font-size:15px;font-weight:400;
+  font-family:'DM Sans',sans-serif;
+  cursor:pointer;
+  transition:color 0.2s;
+}
+.age-btn-cancel:hover{color:rgba(255,255,255,0.7);}
 </style>
 </head>
 <body>
@@ -381,6 +450,34 @@ window.onload = function() {
     document.head.appendChild(s);
   }
 
+
+  // Age verification modal
+  var pendingUrl = '';
+  function openAgeModal(url) {
+    pendingUrl = url;
+    document.getElementById('ageConfirm').href = url;
+    document.getElementById('ageModal').classList.add('open');
+  }
+  function closeAgeModal() {
+    document.getElementById('ageModal').classList.remove('open');
+    pendingUrl = '';
+  }
+  // Close on background click
+  document.getElementById('ageModal').addEventListener('click', function(e) {
+    if (e.target === this) closeAgeModal();
+  });
+  // Intercept OF and Telegram links
+  var protectedLinks = ['J_cta','J_card_vip','J_card_free','J_card_tg'];
+  protectedLinks.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var originalHref = el.href;
+    el.addEventListener('click', function(e) {
+      e.preventDefault();
+      openAgeModal(originalHref);
+    });
+  });
+
   // Scroll reveal
   var obs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
@@ -390,5 +487,16 @@ window.onload = function() {
   document.querySelectorAll('.reveal').forEach(function(el) { obs.observe(el); });
 };
 </script>
+
+<!-- Age Verification Modal -->
+<div class="age-modal-bg" id="ageModal">
+  <div class="age-modal">
+    <div class="age-modal-icon">🔞</div>
+    <h2>Age Verification Required</h2>
+    <p>You must be 18 years or older to access this content.</p>
+    <a class="age-btn-confirm" id="ageConfirm" href="#" target="_blank" rel="noopener">I am 18 or older</a>
+    <button class="age-btn-cancel" onclick="closeAgeModal()">Cancel</button>
+  </div>
+</div>
 </body>
 </html>
