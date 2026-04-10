@@ -107,12 +107,14 @@ body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif
   .eyebrow-line{width:32px;}
   .eyebrow-text{font-size:10px;letter-spacing:5px;}
 
-  /* Desktop cursor glow effect */
+  /* Premium custom cursor */
   body{cursor:none;}
-  .cursor{position:fixed;width:12px;height:12px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s ease,width 0.2s ease,height 0.2s ease,opacity 0.2s ease;mix-blend-mode:difference;}
-  .cursor-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(255,255,255,0.3);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform 0.08s ease,width 0.25s ease,height 0.25s ease,opacity 0.2s ease;}
-  .cursor.grow{width:20px;height:20px;}
-  .cursor-ring.grow{width:56px;height:56px;border-color:var(--accent);opacity:0.5;}
+  .cursor{position:fixed;width:8px;height:8px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.25s ease,height 0.25s ease,background 0.25s ease;mix-blend-mode:difference;}
+  .cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid rgba(255,255,255,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.35s cubic-bezier(0.25,0.46,0.45,0.94),height 0.35s cubic-bezier(0.25,0.46,0.45,0.94),border-color 0.3s ease,opacity 0.3s ease;}
+  .cursor.grow{width:6px;height:6px;background:var(--accent);}
+  .cursor-ring.grow{width:64px;height:64px;border-color:var(--accent);border-width:1px;}
+  .cursor-trail{position:fixed;border-radius:50%;pointer-events:none;z-index:9997;background:var(--accent);transform:translate(-50%,-50%);animation:trailfade 0.6s ease forwards;}
+  @keyframes trailfade{0%{opacity:0.4;width:6px;height:6px;}100%{opacity:0;width:2px;height:2px;}}
 }
 
 @media (min-width: 1200px) {
@@ -237,21 +239,63 @@ window.onload = function() {
     document.head.appendChild(s);
   }
 
-  // Custom cursor — desktop only
+  // Premium custom cursor — desktop only
   var cur = document.getElementById('cursor');
   var ring = document.getElementById('cursorRing');
   if (window.innerWidth >= 768) {
+    var mouseX = 0, mouseY = 0;
+    var ringX = 0, ringY = 0;
+    var trailInterval;
+
     document.addEventListener('mousemove', function(e) {
-      cur.style.left = e.clientX + 'px';
-      cur.style.top  = e.clientY + 'px';
-      setTimeout(function() {
-        ring.style.left = e.clientX + 'px';
-        ring.style.top  = e.clientY + 'px';
-      }, 80);
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cur.style.left = mouseX + 'px';
+      cur.style.top  = mouseY + 'px';
+
+      // Spawn trail particle
+      var trail = document.createElement('div');
+      trail.className = 'cursor-trail';
+      trail.style.left = mouseX + 'px';
+      trail.style.top  = mouseY + 'px';
+      trail.style.width = '5px';
+      trail.style.height = '5px';
+      document.body.appendChild(trail);
+      setTimeout(function() { trail.remove(); }, 600);
     });
-    document.querySelectorAll('a, .social-icon').forEach(function(el) {
-      el.addEventListener('mouseenter', function() { cur.classList.add('grow'); ring.classList.add('grow'); });
-      el.addEventListener('mouseleave', function() { cur.classList.remove('grow'); ring.classList.remove('grow'); });
+
+    // Smooth ring follow with lerp
+    function lerpRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX + 'px';
+      ring.style.top  = ringY + 'px';
+      requestAnimationFrame(lerpRing);
+    }
+    lerpRing();
+
+    // Grow on hover
+    document.querySelectorAll('a, .social-icon, .card, .gcell').forEach(function(el) {
+      el.addEventListener('mouseenter', function() {
+        cur.classList.add('grow');
+        ring.classList.add('grow');
+      });
+      el.addEventListener('mouseleave', function() {
+        cur.classList.remove('grow');
+        ring.classList.remove('grow');
+      });
+    });
+
+    // Click burst
+    document.addEventListener('mousedown', function() {
+      ring.style.width = '20px';
+      ring.style.height = '20px';
+      ring.style.borderColor = '#fff';
+    });
+    document.addEventListener('mouseup', function() {
+      ring.style.width = '';
+      ring.style.height = '';
+      ring.style.borderColor = '';
     });
   } else {
     cur.style.display = 'none';
