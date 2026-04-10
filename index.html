@@ -9,117 +9,252 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-:root{--accent:#E63946;--black:#050505;--white:#FFFFFF;--surface:#0F0F0F;--surface2:#1A1A1A;--gray:#666;--border:rgba(255,255,255,0.06);}
+:root{--accent:#E63946;--black:#050505;--white:#FFFFFF;--surface:#0F0F0F;--surface2:#1A1A1A;--gray:#666;--border:rgba(255,255,255,0.08);}
 html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent;}
 body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
 
-/* ── HERO ── */
-.hero{position:relative;width:100%;min-height:100dvh;overflow:hidden;}
-.hero-photo{position:relative;width:100%;height:auto;display:block;object-fit:contain;object-position:center top;}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,5,5,0.05) 0%,rgba(5,5,5,0) 30%,rgba(5,5,5,0.6) 75%,rgba(5,5,5,1) 100%);}
-.hero-grain{position:absolute;inset:0;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");pointer-events:none;}
+/* ── PAGE WRAPPER ── */
+.page{max-width:520px;margin:0 auto;padding:20px 16px;}
 
-.hero-content{position:relative;width:100%;max-width:600px;margin:0 auto;padding:32px 24px max(44px,env(safe-area-inset-bottom,44px));animation:heroin 0.9s ease both;}
-@keyframes heroin{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+/* ── HERO CARD ── */
+.hero-card{
+  position:relative;
+  width:100%;
+  aspect-ratio:3/4;
+  border-radius:28px;
+  overflow:hidden;
+  background:var(--surface2);
+  margin-bottom:16px;
+}
 
-.live-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.07);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.1);border-radius:40px;padding:5px 14px 5px 8px;margin-bottom:16px;font-size:10px;color:rgba(255,255,255,0.5);letter-spacing:2.5px;text-transform:uppercase;}
-.live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);flex-shrink:0;animation:livepulse 2.2s ease-in-out infinite;}
-@keyframes livepulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.45;transform:scale(0.8);}}
+.hero-photo{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center top;
+}
 
-.hero-name{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(52px,13vw,92px);line-height:0.9;letter-spacing:-1px;color:var(--white);margin-bottom:24px;white-space:nowrap;}
+/* Gradient overlay — bottom heavy */
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    180deg,
+    rgba(5,5,5,0) 30%,
+    rgba(5,5,5,0.4) 60%,
+    rgba(5,5,5,0.85) 85%,
+    rgba(5,5,5,0.95) 100%
+  );
+}
 
-.social-row{display:flex;align-items:center;gap:10px;margin-bottom:22px;}
-.social-icon{width:48px;height:48px;border-radius:12px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;text-decoration:none;transition:background 0.2s,transform 0.2s;flex-shrink:0;cursor:pointer;}
-.social-icon:hover{background:rgba(255,255,255,0.16);transform:translateY(-3px);}
+/* Grain */
+.hero-grain{
+  position:absolute;
+  inset:0;
+  opacity:0.03;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events:none;
+}
+
+/* Content overlaid on photo */
+.hero-inner{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  padding:24px 22px;
+}
+
+/* Name */
+.hero-name{
+  font-family:'Playfair Display',serif;
+  font-weight:900;
+  font-size:clamp(36px,8vw,52px);
+  color:var(--white);
+  line-height:1;
+  margin-bottom:14px;
+  letter-spacing:-0.5px;
+}
+
+/* Follower badge — full width bar like Angie's */
+.follower-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:rgba(10,10,10,0.65);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:40px;
+  padding:10px 18px;
+  margin-bottom:16px;
+}
+
+.follower-bar-left{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:10px;
+  color:rgba(255,255,255,0.5);
+  letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:500;
+}
+
+.live-dot{
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--accent);
+  flex-shrink:0;
+  animation:livepulse 2.2s ease-in-out infinite;
+}
+
+@keyframes livepulse{
+  0%,100%{opacity:1;transform:scale(1);}
+  50%{opacity:0.4;transform:scale(0.75);}
+}
+
+.follower-count{
+  font-size:13px;
+  font-weight:500;
+  color:var(--white);
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+/* Social icons row inside card */
+.social-row{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+}
+
+.social-icon{
+  width:52px;height:52px;
+  border-radius:14px;
+  background:rgba(15,15,15,0.7);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.12);
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;
+  transition:background 0.2s,transform 0.2s;
+  flex-shrink:0;
+}
+
+.social-icon:hover,.social-icon:active{
+  background:rgba(30,30,30,0.85);
+  transform:translateY(-2px);
+}
+
 .social-icon svg{width:22px;height:22px;fill:var(--white);}
 
-.cta-btn{display:flex;align-items:center;gap:10px;width:100%;max-width:420px;padding:17px 24px;background:var(--accent);border-radius:16px;font-size:14px;font-weight:500;color:#fff;text-decoration:none;position:relative;overflow:hidden;transition:filter 0.2s,transform 0.15s;}
-.cta-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.13) 0%,transparent 100%);pointer-events:none;}
-.cta-btn:hover{filter:brightness(1.12);transform:scale(1.01);}
+/* ── CTA BUTTON ── */
+.cta-btn{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  padding:18px 24px;
+  background:var(--accent);
+  border-radius:18px;
+  font-size:15px;
+  font-weight:500;
+  color:#fff;
+  text-decoration:none;
+  position:relative;
+  overflow:hidden;
+  transition:filter 0.2s,transform 0.15s;
+  margin-bottom:12px;
+}
+
+.cta-btn::after{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(255,255,255,0.13) 0%,transparent 100%);
+  pointer-events:none;
+}
+
+.cta-btn:hover{filter:brightness(1.1);}
 .cta-btn:active{transform:scale(0.98);}
 .cta-arrow{margin-left:auto;font-size:18px;}
 
-.scroll-hint{display:none;}
-@keyframes scrollfade{0%,100%{opacity:0.2;}50%{opacity:0.6;}}
+/* ── SECTIONS ── */
+.sec{padding:40px 0;}
 
-/* ── PAGE ── */
-.page{max-width:600px;margin:0 auto;padding:0 24px;}
-
-.sec{padding:56px 0;}
-.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:24px;}
-.eyebrow-line{width:28px;height:1.5px;background:var(--accent);flex-shrink:0;}
+.eyebrow{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:20px;
+}
+.eyebrow-line{width:24px;height:1.5px;background:var(--accent);flex-shrink:0;}
 .eyebrow-text{font-size:9px;color:var(--accent);letter-spacing:4px;text-transform:uppercase;font-weight:500;}
 
-/* ── CARDS ── */
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.card{position:relative;border-radius:16px;overflow:hidden;text-decoration:none;display:block;background:var(--surface2);transition:transform 0.3s ease, box-shadow 0.3s ease;}
-.card:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,0.4);}
-.card:active{transform:scale(0.98);}
+/* ── CONTENT CARDS ── */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.card{
+  position:relative;border-radius:16px;overflow:hidden;
+  text-decoration:none;display:block;background:var(--surface2);
+  transition:transform 0.25s;
+}
+.card:active{transform:scale(0.97);}
 .card.wide{grid-column:1/-1;aspect-ratio:16/9;}
 .card.tall{aspect-ratio:2/3;}
-.card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.4s ease;}
-.card:hover img{transform:scale(1.03);}
-.card-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:linear-gradient(to top,rgba(5,5,5,0.75) 0%,rgba(5,5,5,0.1) 100%);}
-.card-lock{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;font-size:16px;}
+.card img{width:100%;height:100%;object-fit:cover;display:block;}
+.card-overlay{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(to top,rgba(5,5,5,0.75) 0%,rgba(5,5,5,0.1) 100%);
+}
+.card-lock{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,0.09);border:1px solid rgba(255,255,255,0.18);
+  display:flex;align-items:center;justify-content:center;font-size:16px;
+}
 .card-lbl{font-size:11px;color:rgba(255,255,255,0.7);text-align:center;padding:0 16px;line-height:1.45;}
-.card-badge{position:absolute;top:12px;left:12px;font-size:8px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:var(--accent);color:#fff;}
+.card-badge{
+  position:absolute;top:11px;left:11px;
+  font-size:8px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  padding:4px 10px;border-radius:20px;background:var(--accent);color:#fff;
+}
 .card-badge.gold{background:linear-gradient(135deg,#8B6914,#C9A96E);color:#1a1000;}
 .card-badge.blue{background:#229ED9;color:#fff;}
 
 /* ── GALLERY ── */
-.gallery{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;border-radius:16px;overflow:hidden;}
+.gallery{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;border-radius:16px;overflow:hidden;}
 .gcell{overflow:hidden;background:var(--surface2);}
-.gcell.wide{grid-column:1/-1;aspect-ratio:16/9;}
-.gcell.sq{aspect-ratio:1;}
-.gcell img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;}
-.gcell:hover img{transform:scale(1.06);}
+.gcell.wide{grid-column:1/-1;aspect-ratio:3/2;}
+.gcell.sq{aspect-ratio:4/5;}
+.gcell img{width:100%;height:100%;object-fit:contain;background:#111;display:block;transition:transform 0.4s;}
+.gcell:hover img{transform:scale(1.05);}
 .gph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:20px;opacity:0.15;}
 
 /* ── FOOTER ── */
-.site-footer{text-align:center;padding:32px 20px max(48px,env(safe-area-inset-bottom,48px));font-size:9px;color:rgba(255,255,255,0.1);letter-spacing:2px;text-transform:uppercase;border-top:1px solid var(--border);margin-top:8px;}
+.site-footer{text-align:center;padding:24px 20px 48px;font-size:9px;color:rgba(255,255,255,0.1);letter-spacing:2px;text-transform:uppercase;}
 
 /* ── REVEAL ── */
-.reveal{opacity:0;transform:translateY(22px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.7s ease,transform 0.7s ease;}
 .reveal.in{opacity:1;transform:translateY(0);}
 
-/* ── DESKTOP UPGRADES ── */
-@media (min-width: 768px) {
-  .hero-name{font-size:clamp(80px,9vw,120px);letter-spacing:-3px;}
-  .hero-content{max-width:680px;}
-
-  .social-icon{width:52px;height:52px;border-radius:14px;}
-  .social-icon svg{width:24px;height:24px;}
-
-  .cta-btn{font-size:15px;padding:19px 28px;border-radius:18px;max-width:480px;}
-
-  .page{max-width:680px;padding:0 40px;}
-  .sec{padding:72px 0;}
-
-  .cards{gap:14px;}
+/* ── DESKTOP ── */
+@media(min-width:768px){
+  .page{max-width:600px;padding:32px 24px;}
+  .hero-card{aspect-ratio:4/5;border-radius:36px;}
+  .hero-name{font-size:clamp(48px,6vw,72px);}
+  .social-icon{width:58px;height:58px;border-radius:16px;}
+  .social-icon svg{width:26px;height:26px;}
+  .cta-btn{font-size:16px;padding:20px 28px;border-radius:20px;}
+  .cards{gap:12px;}
   .card{border-radius:20px;}
-  .card.wide{aspect-ratio:2/1;}
-  .card.tall{aspect-ratio:3/4;}
-  .card-lbl{font-size:12px;}
-  .card-badge{font-size:9px;padding:5px 12px;}
+  .gallery{gap:6px;border-radius:20px;}
+  .sec{padding:56px 0;}
 
-  .gallery{gap:8px;border-radius:20px;}
 
-  .eyebrow-line{width:32px;}
-  .eyebrow-text{font-size:10px;letter-spacing:5px;}
-
-  /* Premium custom cursor */
-  body{cursor:none;}
-  .cursor{position:fixed;width:8px;height:8px;background:#fff;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width 0.25s ease,height 0.25s ease,background 0.25s ease;mix-blend-mode:difference;}
-  .cursor-ring{position:fixed;width:40px;height:40px;border:1.5px solid rgba(255,255,255,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.35s cubic-bezier(0.25,0.46,0.45,0.94),height 0.35s cubic-bezier(0.25,0.46,0.45,0.94),border-color 0.3s ease,opacity 0.3s ease;}
-  .cursor.grow{width:6px;height:6px;background:var(--accent);}
-  .cursor-ring.grow{width:64px;height:64px;border-color:var(--accent);border-width:1px;}
-  .cursor-trail{position:fixed;border-radius:50%;pointer-events:none;z-index:9997;background:var(--accent);transform:translate(-50%,-50%);animation:trailfade 0.6s ease forwards;}
-  @keyframes trailfade{0%{opacity:0.4;width:6px;height:6px;}100%{opacity:0;width:2px;height:2px;}}
 }
 
-@media (min-width: 1200px) {
-  .hero-name{font-size:clamp(100px,8vw,140px);}
-  .page{max-width:780px;}
+@media(min-width:1200px){
+  .page{max-width:680px;}
+  .hero-name{font-size:72px;}
 }
 </style>
 </head>
@@ -142,52 +277,59 @@ var CREATOR = {
 };
 </script>
 
-<!-- CURSOR (desktop only) -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-
-<section class="hero">
-  <img class="hero-photo" src="hero.jpeg" alt="" onerror="this.style.opacity='0'">
-  <div class="hero-overlay"></div>
-  <div class="hero-grain"></div>
-  <div class="hero-content">
-    <div class="live-badge"><span class="live-dot"></span><span id="J_followers"></span></div>
-    <h1 class="hero-name" id="J_name"></h1>
-    <div class="social-row">
-      <a class="social-icon" id="J_ig" href="#" target="_blank" rel="noopener" title="Instagram">
-        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-      </a>
-      <a class="social-icon" id="J_tw" href="#" target="_blank" rel="noopener" title="Twitter/X">
-        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      </a>
-      <a class="social-icon" id="J_tt" href="#" target="_blank" rel="noopener" title="TikTok">
-        <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
-      </a>
-      <a class="social-icon" id="J_tg" href="#" target="_blank" rel="noopener" title="Telegram">
-        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-      </a>
-    </div>
-    <a class="cta-btn" id="J_cta" href="#" target="_blank" rel="noopener">
-      <span>&#128081;</span><span>VIP OnlyFans &mdash; Todo sin filtros</span><span class="cta-arrow">&#8594;</span>
-    </a>
-  </div>
-  <div class="scroll-hint">scroll</div>
-</section>
-
 <div class="page">
 
+  <!-- HERO CARD -->
+  <div class="hero-card">
+    <img class="hero-photo" src="hero.jpeg" alt="Erika Gomez" onerror="this.style.opacity='0'">
+    <div class="hero-overlay"></div>
+    <div class="hero-grain"></div>
+    <div class="hero-inner">
+      <h1 class="hero-name" id="J_name"></h1>
+      <div class="follower-bar">
+        <div class="follower-bar-left">
+          <span class="live-dot"></span>
+          <span>Live Reach</span>
+        </div>
+        <span class="follower-count" id="J_followers"></span>
+      </div>
+      <div class="social-row">
+        <a class="social-icon" id="J_ig" href="#" target="_blank" rel="noopener" title="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a class="social-icon" id="J_tw" href="#" target="_blank" rel="noopener" title="Twitter/X">
+          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a class="social-icon" id="J_tt" href="#" target="_blank" rel="noopener" title="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z"/></svg>
+        </a>
+        <a class="social-icon" id="J_tg" href="#" target="_blank" rel="noopener" title="Telegram">
+          <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Button -->
+  <a class="cta-btn" id="J_cta" href="#" target="_blank" rel="noopener">
+    <span>&#128081;</span>
+    <span>Exclusive Content 18+</span>
+    <span class="cta-arrow">&#8594;</span>
+  </a>
+
+  <!-- Content Cards -->
   <div class="sec reveal">
     <div class="eyebrow"><div class="eyebrow-line"></div><div class="eyebrow-text">Exclusive Content</div></div>
     <div class="cards">
       <a class="card wide" id="J_card_vip" href="#" target="_blank" rel="noopener">
         <img src="card1.jpeg" alt="" onerror="this.style.display='none'">
         <div class="card-badge gold">VIP</div>
-        <div class="card-overlay"><div class="card-lock">&#128081;</div><div class="card-lbl">VIP OnlyFans &mdash; Todo sin filtros</div></div>
+        <div class="card-overlay"><div class="card-lock">&#128081;</div><div class="card-lbl">Exclusive Content 18+</div></div>
       </a>
       <a class="card tall" id="J_card_free" href="#" target="_blank" rel="noopener">
         <img src="card2.jpeg" alt="" onerror="this.style.display='none'">
         <div class="card-badge">FREE</div>
-        <div class="card-overlay"><div class="card-lock">&#128293;</div><div class="card-lbl">Free OnlyFans &mdash; Entra Gratis</div></div>
+        <div class="card-overlay"><div class="card-lock">&#128293;</div><div class="card-lbl">Free Content 18+</div></div>
       </a>
       <a class="card tall" id="J_card_tg" href="#" target="_blank" rel="noopener">
         <img src="card3.jpeg" alt="" onerror="this.style.display='none'">
@@ -197,6 +339,7 @@ var CREATOR = {
     </div>
   </div>
 
+  <!-- Gallery -->
   <div class="sec reveal">
     <div class="eyebrow"><div class="eyebrow-line"></div><div class="eyebrow-text">Gallery</div></div>
     <div class="gallery">
@@ -220,7 +363,7 @@ window.onload = function() {
   document.documentElement.style.setProperty('--accent', C.accent);
   document.title = C.name;
   document.getElementById('J_name').textContent      = C.name;
-  document.getElementById('J_followers').textContent = C.followers + ' followers';
+  document.getElementById('J_followers').textContent = C.followers + ' Followers';
   document.getElementById('J_cta').href              = C.vip_of_url;
   document.getElementById('J_card_vip').href         = C.vip_of_url;
   document.getElementById('J_card_free').href        = C.free_of_url;
@@ -233,73 +376,9 @@ window.onload = function() {
 
   if (C.analytics_url && C.analytics_id) {
     var s = document.createElement('script');
-    s.defer = true;
-    s.src = C.analytics_url;
+    s.defer = true; s.src = C.analytics_url;
     s.setAttribute('data-website-id', C.analytics_id);
     document.head.appendChild(s);
-  }
-
-  // Premium custom cursor — desktop only
-  var cur = document.getElementById('cursor');
-  var ring = document.getElementById('cursorRing');
-  if (window.innerWidth >= 768) {
-    var mouseX = 0, mouseY = 0;
-    var ringX = 0, ringY = 0;
-    var trailInterval;
-
-    document.addEventListener('mousemove', function(e) {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      cur.style.left = mouseX + 'px';
-      cur.style.top  = mouseY + 'px';
-
-      // Spawn trail particle
-      var trail = document.createElement('div');
-      trail.className = 'cursor-trail';
-      trail.style.left = mouseX + 'px';
-      trail.style.top  = mouseY + 'px';
-      trail.style.width = '5px';
-      trail.style.height = '5px';
-      document.body.appendChild(trail);
-      setTimeout(function() { trail.remove(); }, 600);
-    });
-
-    // Smooth ring follow with lerp
-    function lerpRing() {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
-      ring.style.left = ringX + 'px';
-      ring.style.top  = ringY + 'px';
-      requestAnimationFrame(lerpRing);
-    }
-    lerpRing();
-
-    // Grow on hover
-    document.querySelectorAll('a, .social-icon, .card, .gcell').forEach(function(el) {
-      el.addEventListener('mouseenter', function() {
-        cur.classList.add('grow');
-        ring.classList.add('grow');
-      });
-      el.addEventListener('mouseleave', function() {
-        cur.classList.remove('grow');
-        ring.classList.remove('grow');
-      });
-    });
-
-    // Click burst
-    document.addEventListener('mousedown', function() {
-      ring.style.width = '20px';
-      ring.style.height = '20px';
-      ring.style.borderColor = '#fff';
-    });
-    document.addEventListener('mouseup', function() {
-      ring.style.width = '';
-      ring.style.height = '';
-      ring.style.borderColor = '';
-    });
-  } else {
-    cur.style.display = 'none';
-    ring.style.display = 'none';
   }
 
   // Scroll reveal
