@@ -340,8 +340,8 @@ var CREATOR = {
   twitter_url:    "https://x.com/erikgomez444",
   instagram_url:  "https://www.instagram.com/erikagomez_92/",
   tiktok_url:     "https://www.tiktok.com/@erikgomez888",
-  analytics_id:   "",
-  analytics_url:  "",
+  analytics_id:   "f19a2d2e-a05f-4c7d-b169-5d31ac50976c",
+  analytics_url:  "https://cloud.umami.is/script.js",
   footer:         "\u00a9 2025 Erika Gomez \u00b7 18+ Only"
 };
 </script>
@@ -466,6 +466,14 @@ window.onload = function() {
   document.getElementById('ageModal').addEventListener('click', function(e) {
     if (e.target === this) closeAgeModal();
   });
+  // Cancel button
+  document.getElementById('ageCancelBtn').addEventListener('click', function() {
+    closeAgeModal();
+  });
+  // Cancel button
+  document.getElementById('ageCancelBtn').addEventListener('click', function() {
+    closeAgeModal();
+  });
   // Intercept OF and Telegram links
   var protectedLinks = ['J_cta','J_card_vip','J_card_free','J_card_tg'];
   protectedLinks.forEach(function(id) {
@@ -495,7 +503,7 @@ window.onload = function() {
     <h2>Age Verification Required</h2>
     <p>You must be 18 years or older to access this content.</p>
     <a class="age-btn-confirm" id="ageConfirm" href="#" target="_blank" rel="noopener">I am 18 or older</a>
-    <button class="age-btn-cancel" onclick="closeAgeModal()">Cancel</button>
+    <button class="age-btn-cancel" id="ageCancelBtn">Cancel</button>
   </div>
 </div>
 </body>
