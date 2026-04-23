@@ -1,6 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script>
+// Bot detection — runs before anything else loads
+(function() {
+  var ua = navigator.userAgent.toLowerCase();
+  var bots = [
+    'bot','crawler','spider','scraper','facebookexternalhit',
+    'facebot','instagram','linkedinbot','twitterbot','slurp',
+    'bingbot','googlebot','duckduckbot','baiduspider','yandex',
+    'sogou','exabot','ia_archiver','semrushbot','ahrefsbot',
+    'mj12bot','dotbot','rogerbot','seznambot','pinterestbot',
+    'whatsapp','telegram','slack','discord','skype','curl',
+    'wget','python','java','ruby','go-http','axios','fetch'
+  ];
+  var isBot = bots.some(function(b) { return ua.indexOf(b) !== -1; });
+  // Also check for headless browsers
+  if (!isBot && (navigator.webdriver || !window.chrome && /chrome/.test(ua))) {
+    isBot = true;
+  }
+  if (isBot) {
+    // Show bots a clean neutral page with no adult content
+    document.addEventListener('DOMContentLoaded', function() {
+      document.body.innerHTML = '<div style="font-family:sans-serif;max-width:600px;margin:80px auto;padding:0 24px;text-align:center"><h1 style="font-size:24px;color:#111;margin-bottom:12px">Erika Gomez</h1><p style="color:#666;font-size:14px">Content creator and social media personality.</p><p style="color:#999;font-size:12px;margin-top:24px">Follow on Instagram, TikTok, Twitter and Telegram.</p></div>';
+      document.title = 'Erika Gomez';
+    });
+  }
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#050505">
