@@ -5,22 +5,29 @@
 // Bot detection — runs before anything else loads
 (function() {
   var ua = navigator.userAgent.toLowerCase();
+
+  // Whitelist: real users coming from social apps
+  // Instagram, Facebook, Twitter in-app browsers are real users
+  var humanApps = ['instagram','fbav','fban','twitter','twitterandroid','twitterios'];
+  var isHuman = humanApps.some(function(h) { return ua.indexOf(h) !== -1; });
+  if (isHuman) return; // Always let real social app users through
+
+  // Known bots and crawlers
   var bots = [
-    'bot','crawler','spider','scraper','facebookexternalhit',
-    'facebot','instagram','linkedinbot','twitterbot','slurp',
+    'facebookexternalhit','facebot','linkedinbot','slurp',
     'bingbot','googlebot','duckduckbot','baiduspider','yandex',
     'sogou','exabot','ia_archiver','semrushbot','ahrefsbot',
     'mj12bot','dotbot','rogerbot','seznambot','pinterestbot',
     'whatsapp','telegram','slack','discord','skype','curl',
-    'wget','python','java','ruby','go-http','axios','fetch'
+    'wget','python-requests','java','ruby','go-http','axios',
+    'bot','crawler','spider','scraper'
   ];
   var isBot = bots.some(function(b) { return ua.indexOf(b) !== -1; });
-  // Also check for headless browsers
-  if (!isBot && (navigator.webdriver || !window.chrome && /chrome/.test(ua))) {
-    isBot = true;
-  }
+
+  // Headless browser check
+  if (!isBot && navigator.webdriver) { isBot = true; }
+
   if (isBot) {
-    // Show bots a clean neutral page with no adult content
     document.addEventListener('DOMContentLoaded', function() {
       document.body.innerHTML = '<div style="font-family:sans-serif;max-width:600px;margin:80px auto;padding:0 24px;text-align:center"><h1 style="font-size:24px;color:#111;margin-bottom:12px">Erika Gomez</h1><p style="color:#666;font-size:14px">Content creator and social media personality.</p><p style="color:#999;font-size:12px;margin-top:24px">Follow on Instagram, TikTok, Twitter and Telegram.</p></div>';
       document.title = 'Erika Gomez';
